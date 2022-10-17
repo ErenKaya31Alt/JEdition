@@ -42,6 +42,7 @@ import lime.utils.Assets;
 import openfl.Lib;
 import openfl.display.BlendMode;
 import openfl.display.Shader;
+import openfl.utils.Assets as OpenFlAssets;
 import openfl.filters.ShaderFilter;
 import openfl.display.StageQuality;
 import openfl.filters.BitmapFilter;
@@ -266,6 +267,8 @@ class PlayState extends MusicBeatState
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
 	var bgGhouls:BGSprite;
+	var Tripper:Bool = false;
+	var disableTheTripperAt:Int;
 
 	var tankWatchtower:BGSprite;
 	var tankGround:BGSprite;
@@ -282,6 +285,7 @@ class PlayState extends MusicBeatState
 	var averageMs:Float = 0;
 
 	var timeTxt:FlxText;
+	var judgementCounter:FlxText;
 	var scoreTxtTween:FlxTween;
 
 	var msTimeTxt:FlxText;
@@ -1299,6 +1303,16 @@ class PlayState extends MusicBeatState
 		}
 		add(scoreTxt);
 
+        judgementCounter = new FlxText(20, 0, 0, '', 20);
+        judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        judgementCounter.borderSize = 2;
+        judgementCounter.borderQuality = 2;
+        judgementCounter.scrollFactor.set();
+        judgementCounter.cameras = [camHUD];
+        judgementCounter.screenCenter(Y);
+        judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\n';
+        add(judgementCounter);
+
 		songTxt = new FlxText(12, FlxG.height - 24, 0, "", 8);
 		songTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songTxt.scrollFactor.set();
@@ -1309,9 +1323,11 @@ class PlayState extends MusicBeatState
 			songTxt.visible = false;
 		}
 		add(songTxt);
-		songTxt.text = curSong + " (" + storyDifficultyText + ") " + "| OS " + MainMenuState.osEngineVersion;
+		songTxt.text = curSong + " (" + storyDifficultyText + ") " + "/ The J Engine " + MainMenuState.osEngineVersion;
 
-		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
+		var texts:Array<String> = ["CHEATER", "cope", "bro is lazy to beat this song :skull:", "bros mom said no", "is you bro sleeping?", "skill issue", "ratio"];
+		var daRandomInt:Int = FlxG.random.int(0, texts.length-1);
+		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, texts[daRandomInt], 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
@@ -1515,6 +1531,8 @@ class PlayState extends MusicBeatState
 			camHUD.visible = false;
 			instance.cpuControlled = true;
 		}
+
+		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\n';
 	}
 
 	function set_songSpeed(value:Float):Float
@@ -3061,10 +3079,37 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+
 		/*if (FlxG.keys.justPressed.NINE)
 		{
 			iconP1.swapOldIcon();
 		}*/
+
+		if(disableTheTripperAt == curStep)
+			{
+disableTheTripper = true;
+			}
+		   if(isDead)
+		   {
+disableTheTripper = true;
+		  }
+
+		 FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+		 screenshader.update(elapsed);
+		 if(disableTheTripper)
+		{
+screenshader.shader.uampmul.value[0] -= (elapsed / 2);
+		}
+
+if (curbg != null)
+{
+if (curbg.active)
+{
+var shad = cast(curbg.shader, Shaders.GlitchShader);
+shad.uTime.value[0] += elapsed;
+}
+}
+
 		callOnLuas('onUpdate', [elapsed]);
 		callOnHScripts('update', [elapsed]);
 
@@ -3666,6 +3711,23 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
+			case 'Rainbow Eyesore':
+				var timeRainbow:Int = Std.parseInt(value1);
+				var speedRainbow:Float = Std.parseFloat(value2);
+				disableTheTripper = false;
+				disableTheTripperAt = timeRainbow;
+				FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+				screenshader.waveAmplitude = 1;
+				screenshader.waveFrequency = 2;
+				screenshader.waveSpeed = speedRainbow;
+				screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
+				screenshader.shader.uampmul.value[0] = 1;
+				if(!ClientPrefs.flashing) {
+					screenshader.Enabled = false; //to make it so people dont die
+				} else {
+					screenshader.Enabled = true;
+				}
+				
 			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
 				if(val == null) val = 0;

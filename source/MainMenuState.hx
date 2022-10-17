@@ -30,7 +30,8 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var osEngineVersion:String = '1.5.1'; //This is also used for Discord RPC
+	public static var osEngineVersion:String = '1.5.1';
+	public static var theJEdition:String = '1'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -40,10 +41,10 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
-		#if MODS_ALLOWED 'mods', #end
-		#if ACHIEVEMENTS_ALLOWED 'awards', #end
+		//#if MODS_ALLOWED 'mods', #end
+		//#if ACHIEVEMENTS_ALLOWED 'awards', #end
 		'credits',
-		'donate',
+		//'donate',
 		//'discord', you can go to discord now by pressing ctrl in credits
 		'options'
 	];
@@ -168,7 +169,11 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(FlxG.width * 0.7, FlxG.height - 44, 0, "OS Engine v" + osEngineVersion + " - Modded Psych Engine", 12);
+		var versionShit:FlxText = new FlxText(FlxG.width * 0.7, FlxG.height - 64, 0, "OS Engine v" + osEngineVersion + " - Modded Psych Engine", 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+		var versionShit:FlxText = new FlxText(FlxG.width * 0.7, FlxG.height - 44, 0, "The J Engine v" + theJEdition, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -334,7 +339,7 @@ class MainMenuState extends MusicBeatState
 									case 'story_mode':
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
+										MusicBeatState.switchState(new FreeplaySelectState());
 									#if MODS_ALLOWED
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenuState()); 

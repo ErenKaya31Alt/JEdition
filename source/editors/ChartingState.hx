@@ -89,7 +89,8 @@ class ChartingState extends MusicBeatState
 		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
 		['Play Sound', 'Value 1: Name of sound (put sound file to /sounds/ directory)'],
-		['Set Property', "Value 1: Variable name\nValue 2: New value"]
+		['Set Property', "Value 1: Variable name\nValue 2: New value"],
+		['Rainbow Eyesore', "Value 1: When it ends (curStep)\nValue 2: How fast should it be (ex.: 1 is normal, go beyond one for faster speed)"]
 	];
 
 	var _file:FileReference;
