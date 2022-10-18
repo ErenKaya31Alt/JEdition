@@ -112,12 +112,8 @@ class FreeplaySelectState extends MusicBeatState {
 			switch (AllPossibleSongs[CurrentPack].toLowerCase())
 			{
 				case 'main':
-					addWeek(['Farmy'], 1, ['bambi']);
-					addWeek(['Hes Dead'], 1, ['bambi']);
-					addWeek(['STFU'], 1, ['bambi']);
-					addWeek(['Friendly Entity'], 1, ['expunged']);
-					addWeek(['Tonitrophobia'], 1, ['expunged']);
-					addWeek(['Deangel'], 1, ['expunged']);
+					addWeek(['Farmy', 'Hes Dead', 'STFU'], 1, ['bambi']);
+					addWeek(['Friendly Entity', 'Tonitrophobia', 'Deangel'], 1, ['expunged']);
 				case 'extra':
 					addWeek(['Tarantella'], 8, ['tarantella']);
 					addWeek(['Slapping'], 8, ['slapbi']);
