@@ -1328,7 +1328,7 @@ class PlayState extends MusicBeatState
 		var texts:Array<String> = ["CHEATER", "cope", "bro is lazy to beat this song :skull:", "bros mom said no", "is you bro sleeping?", "skill issue", "ratio"];
 		var daRandomInt:Int = FlxG.random.int(0, texts.length-1);
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, texts[daRandomInt], 32);
-		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.RED);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled;
